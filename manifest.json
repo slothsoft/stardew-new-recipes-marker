@@ -1,0 +1,10 @@
+﻿{
+  "Name": "New Recipes Marker",
+  "Author": "Slothsoft",
+  "Version": "1.0.0",
+  "Description": "This mod marks new crafting recipes so you know which ones you haven't crafted yet.",
+  "UniqueID": "Slothsoft.NewRecipesMarker",
+  "EntryDll": "NewRecipesMarker.dll",
+  "MinimumApiVersion": "2.10.0",
+  "UpdateKeys": []
+}
