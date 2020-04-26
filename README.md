@@ -9,7 +9,7 @@ _A Mod for Stardew Valley_
 
 A mod for [Stardew Valley](https://www.stardewvalley.net/) that marks recipes you haven't crafted yet, so you can more easily hunt achievements: 
 
-<img alt="Screenshot" src="https://i.ytimg.com/vi/W8WFucN1_bs/maxresdefault.jpg" width="300"/>
+<img alt="Screenshot" src="readme/screenshot.png" width="300"/>
 
 Created due to the Corona Boredom and because I wanted to try something brand new.
 
