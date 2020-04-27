@@ -45,9 +45,15 @@ The mod automatically hooks into the game menu. You don't need to do anything mo
 
 _(This section are more or less notes to myself.)_
 
+**Open Features:**
+
+- try Stardew Valley "NEW" instead of Eclipse sparkle
+- display sparkle below popup
+- remove sparkle when the player actually crafts the item
+
 **Used Tutorials:**
 
-- How to setup IDE: [Modding:IDE reference](https://stardewvalleywiki.com/Modding:IDE_reference
+- How to setup IDE: [Modding:IDE reference](https://stardewvalleywiki.com/Modding:IDE_reference)
 - How to create first mod: [Modding:Modder Guide/Get Started](https://stardewvalleywiki.com/Modding:Modder_Guide/Get_Started)
 - How to do some common tasks: [Modding:Common tasks](https://stardewvalleywiki.com/Modding:Common_tasks)
 - SMAPI API: [Modding:Modder Guide/APIs](https://stardewvalleywiki.com/Modding:Modder_Guide/APIs)

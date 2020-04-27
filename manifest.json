@@ -1,4 +1,4 @@
-﻿{
+{
   "Name": "New Recipes Marker",
   "Author": "Slothsoft",
   "Version": "1.0.0",
@@ -6,5 +6,5 @@
   "UniqueID": "Slothsoft.NewRecipesMarker",
   "EntryDll": "NewRecipesMarker.dll",
   "MinimumApiVersion": "2.10.0",
-  "UpdateKeys": []
+  "UpdateKeys": [ "Github:slothsoft/stardew-new-recipes-marker" ]
 }

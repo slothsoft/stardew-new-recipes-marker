@@ -15,13 +15,6 @@ namespace NewRecipesMarker
 
     public class ModEntry : Mod
     {
-        // Note: The recipes are store in these files
-        // - "TileSheets/Craftables" for the craftables
-        // - "Maps/springobjects" for meals
-
-        private const String ASSET_CRAFTABLES = "TileSheets/Craftables";
-        private const String ASSET_MEALS = "Maps/springobjects";
-
         private const String MOD_SPARKLE = "assets/sparkle.png";
 
         private IModHelper helper;
@@ -35,40 +28,54 @@ namespace NewRecipesMarker
             this.helper.Events.Display.RenderedActiveMenu += this.HandleRenderedActiveMenu;
         }
 
-
         private void HandleRenderedActiveMenu(object sender, RenderedActiveMenuEventArgs e)
         {
             if (Game1.activeClickableMenu is GameMenu menu)
             {
                 if (menu.pages[menu.currentTab] is CraftingPage craftingPage)
                 {
-                    var spriteBatch = e.SpriteBatch;
+                    // crafting page in the main menu
+                    AddSparklesToCraftingPage(craftingPage, e.SpriteBatch);
+                }
+            }
+            else if (Game1.activeClickableMenu is CraftingPage craftingPage)
+            {
+                // crafting page for the stove and the workbench
+                AddSparklesToCraftingPage(craftingPage, e.SpriteBatch);
+            }
+        }
 
-                    // TODO: a better "new" might be in Cursors.png at around 320 / 412
+        private void AddSparklesToCraftingPage(CraftingPage craftingPage, SpriteBatch spriteBatch)
+        {
+            // TODO: a better "new" might be in Cursors.png at around 144 / 440
 
-                    Texture2D sourceImage = this.Helper.Content.Load<Texture2D>(MOD_SPARKLE, ContentSource.ModFolder);
+            Texture2D sourceImage = this.Helper.Content.Load<Texture2D>(MOD_SPARKLE, ContentSource.ModFolder);
 
-                    // the following adds stuff to CraftingPage.draw(SpriteBatch)
+            // the following adds stuff to CraftingPage.draw(SpriteBatch)
 
-                    const float scale = Game1.pixelZoom;
-                    const int offsetX = -4;
-                    const int offsetY = -4;
+            const float scale = Game1.pixelZoom;
+            int offsetX = -sourceImage.Width / 2;
+            int offsetY = -sourceImage.Height / 2;
 
-                    foreach (ClickableComponent component in craftingPage.currentPageClickableComponents)
+            foreach (ClickableComponent component in craftingPage.currentPageClickableComponents)
+            {
+                if (component is ClickableTextureComponent clickableComponent)
+                {
+                    Rectangle targetRect = new Rectangle(clickableComponent.bounds.X + offsetX, clickableComponent.bounds.Y + offsetY, (int)(sourceImage.Width * scale), (int)(sourceImage.Height * scale));
+
+                    // TODO: check periodically if we can access craftingPage.pagesOfCraftingRecipes yet
+
+                    List<Dictionary<ClickableTextureComponent, CraftingRecipe>> pagesOfCraftingRecipes = this.helper.Reflection.GetField<List<Dictionary<ClickableTextureComponent, CraftingRecipe>>>(craftingPage, "pagesOfCraftingRecipes").GetValue();
+                    var craftingRecipe = pagesOfCraftingRecipes.Find((dict) => dict.ContainsKey(clickableComponent));
+                    if (craftingRecipe != null && craftingRecipe[clickableComponent].timesCrafted <= 0)
                     {
-                        if (component is ClickableTextureComponent clickableComponent)
-                        {
-                            Rectangle targetRect = new Rectangle(clickableComponent.bounds.X + offsetX, clickableComponent.bounds.Y + offsetY, (int)(sourceImage.Width * scale), (int)(sourceImage.Height * scale));
+                        bool mealWasNotCooked = (craftingRecipe[clickableComponent].isCookingRecipe && !Game1.player.recipesCooked.ContainsKey(craftingRecipe[clickableComponent].getIndexOfMenuView()));
+                        bool craftWasNotCrafted = (!craftingRecipe[clickableComponent].isCookingRecipe && craftingRecipe[clickableComponent].timesCrafted <= 0);
 
-                            // TODO: check periodically if we can access craftingPage.pagesOfCraftingRecipes yet
-                            
-                            List<Dictionary<ClickableTextureComponent, CraftingRecipe>> pagesOfCraftingRecipes = this.helper.Reflection.GetField<List<Dictionary<ClickableTextureComponent, CraftingRecipe>>>(craftingPage, "pagesOfCraftingRecipes").GetValue();
-                            var craftingRecipe = pagesOfCraftingRecipes.Find((dict) => dict.ContainsKey(clickableComponent));
-                            if (craftingRecipe != null && craftingRecipe[clickableComponent].timesCrafted <= 0)
-                            {
-                                // FIXME: we wont to draw BELOW the popups
-                                spriteBatch.Draw(sourceImage, targetRect, Color.White);
-                            }
+                        if (mealWasNotCooked || craftWasNotCrafted)
+                        {
+                            // FIXME: we want to draw BELOW the popups
+                            spriteBatch.Draw(sourceImage, targetRect, null, Color.White, 0, new Vector2(0, 0), SpriteEffects.None, 0);
                         }
                     }
                 }
