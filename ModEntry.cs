@@ -1,31 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 
 using StardewValley;
 using StardewValley.Menus;
 
 namespace NewRecipesMarker
 {
-
     public class ModEntry : Mod
     {
-        private const String MOD_SPARKLE = "assets/sparkle.png";
+        private const string ModSparkle = "assets/sparkle.png";
 
-        private IModHelper helper;
+        private IModHelper _helper;
 
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="newHelper">Provides simplified APIs for writing mods.</param>
 
         public override void Entry(IModHelper newHelper)
         {
-            this.helper = newHelper;
-            this.helper.Events.Display.RenderedActiveMenu += this.HandleRenderedActiveMenu;
+            _helper = newHelper;
+            _helper.Events.Display.RenderedActiveMenu += HandleRenderedActiveMenu;
         }
 
         private void HandleRenderedActiveMenu(object sender, RenderedActiveMenuEventArgs e)
@@ -49,28 +45,28 @@ namespace NewRecipesMarker
         {
             // TODO: a better "new" might be in Cursors.png at around 144 / 440
 
-            Texture2D sourceImage = this.Helper.Content.Load<Texture2D>(MOD_SPARKLE, ContentSource.ModFolder);
+            var sourceImage = Helper.Content.Load<Texture2D>(ModSparkle);
 
             // the following adds stuff to CraftingPage.draw(SpriteBatch)
 
             const float scale = Game1.pixelZoom;
-            int offsetX = -sourceImage.Width / 2;
-            int offsetY = -sourceImage.Height / 2;
+            var offsetX = -sourceImage.Width / 2;
+            var offsetY = -sourceImage.Height / 2;
 
-            foreach (ClickableComponent component in craftingPage.currentPageClickableComponents)
+            foreach (var component in craftingPage.currentPageClickableComponents)
             {
                 if (component is ClickableTextureComponent clickableComponent)
                 {
-                    Rectangle targetRect = new Rectangle(clickableComponent.bounds.X + offsetX, clickableComponent.bounds.Y + offsetY, (int)(sourceImage.Width * scale), (int)(sourceImage.Height * scale));
+                    var targetRect = new Rectangle(clickableComponent.bounds.X + offsetX, clickableComponent.bounds.Y + offsetY, (int)(sourceImage.Width * scale), (int)(sourceImage.Height * scale));
 
                     // TODO: check periodically if we can access craftingPage.pagesOfCraftingRecipes yet
 
-                    List<Dictionary<ClickableTextureComponent, CraftingRecipe>> pagesOfCraftingRecipes = this.helper.Reflection.GetField<List<Dictionary<ClickableTextureComponent, CraftingRecipe>>>(craftingPage, "pagesOfCraftingRecipes").GetValue();
+                    var pagesOfCraftingRecipes = _helper.Reflection.GetField<List<Dictionary<ClickableTextureComponent, CraftingRecipe>>>(craftingPage, "pagesOfCraftingRecipes").GetValue();
                     var craftingRecipe = pagesOfCraftingRecipes.Find((dict) => dict.ContainsKey(clickableComponent));
                     if (craftingRecipe != null && craftingRecipe[clickableComponent].timesCrafted <= 0)
                     {
-                        bool mealWasNotCooked = (craftingRecipe[clickableComponent].isCookingRecipe && !Game1.player.recipesCooked.ContainsKey(craftingRecipe[clickableComponent].getIndexOfMenuView()));
-                        bool craftWasNotCrafted = (!craftingRecipe[clickableComponent].isCookingRecipe && craftingRecipe[clickableComponent].timesCrafted <= 0);
+                        var mealWasNotCooked = (craftingRecipe[clickableComponent].isCookingRecipe && !Game1.player.recipesCooked.ContainsKey(craftingRecipe[clickableComponent].getIndexOfMenuView()));
+                        var craftWasNotCrafted = (!craftingRecipe[clickableComponent].isCookingRecipe && craftingRecipe[clickableComponent].timesCrafted <= 0);
 
                         if (mealWasNotCooked || craftWasNotCrafted)
                         {

@@ -45,13 +45,20 @@ The mod automatically hooks into the game menu. You don't need to do anything mo
 
 _(This section are more or less notes to myself.)_
 
-**Open Features:**
+### Starting Development
+
+To start developing this mod, you need to
+
+1. Create [stardewvalley.targets](https://github.com/Pathoschild/SMAPI/blob/develop/docs/technical/mod-package.md#custom-game-path) file with the game folder
+
+
+### Open Features
 
 - try Stardew Valley "NEW" instead of Eclipse sparkle
 - display sparkle below popup
 - remove sparkle when the player actually crafts the item
 
-**Used Tutorials:**
+### Used Tutorials
 
 - How to setup IDE: [Modding:IDE reference](https://stardewvalleywiki.com/Modding:IDE_reference)
 - How to create first mod: [Modding:Modder Guide/Get Started](https://stardewvalleywiki.com/Modding:Modder_Guide/Get_Started)
