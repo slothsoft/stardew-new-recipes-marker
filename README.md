@@ -1,5 +1,7 @@
-﻿# New Recipes Marker
+﻿# (Deprecated) New Recipes Marker
 _A Mod for Stardew Valley_
+
+**IS NOW PART OF THE [INFORMANT MOD](https://github.com/slothsoft/stardew-informant)!**
 
 [![MIT Licence](https://img.shields.io/github/license/jenkinsci/java-client-api.svg?label=License)](LICENSE)
 
